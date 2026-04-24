@@ -267,7 +267,7 @@ h2.serif {
   font-size: clamp(30px, 4.2vw, 52px); font-weight: 700;
   color: var(--navy); line-height: 1.15; margin-bottom: 16px; letter-spacing: -0.3px;
 }
-h2.serif span { color: var(--teal); font-style: italic; font-size: inherit !important; font-weight: inherit !important; line-height: inherit !important; font-family: inherit !important; }
+h2.serif span { color: var(--teal); font-style: italic; }
 h2.serif.white { color: var(--white); }
 
 .lead { font-size: 16px; color: var(--mid); line-height: 1.8; max-width: 540px; }
@@ -453,7 +453,7 @@ h2.serif span { font-family: 'Playfair Display', serif; font-style: italic; }
   font-size: clamp(38px, 6vw, 74px); font-weight: 700;
   color: var(--white); line-height: 1.1; margin-bottom: 24px; letter-spacing: -.3px;
 }
-.hero-h1 em { font-style: italic; color: var(--teal); font-family: 'Playfair Display', serif; font-size: inherit; font-weight: inherit; line-height: inherit; }
+.hero-h1 em { font-style: italic; color: var(--teal); font-family: 'Playfair Display', serif; }
 .hero-h1 .gn { color: var(--green); }
 
 .hero-p { font-size: 16px; color: rgba(255,255,255,.88); line-height: 1.8; margin-bottom: 36px; max-width: 500px; }
@@ -635,7 +635,7 @@ h2.serif span { font-family: 'Playfair Display', serif; font-style: italic; }
 
 .cpanel { display: none; }
 .cpanel.on { display: block; }
-.cl2 { display: flex; gap: 40px; align-items: flex-start; } .cl2 > *:first-child { flex: 1; min-width: 0; } .cl2 > .rc { flex: 1; min-width: 0; margin-top: 0; }
+.cl2 { display: flex; gap: 40px; align-items: flex-start; } .cl2 > *:first-child { flex: 1; min-width: 0; } .cl2 > .rc { flex: 1; min-width: 0; margin-top: 0; align-self: flex-start; position: sticky; top: 80px; }
 .sg { margin-bottom: 28px; }
 .sg-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
 .sg-lbl { font-size: 13px; color: rgba(255,255,255,.88); font-weight: 500; }
@@ -1435,11 +1435,6 @@ footer { background: linear-gradient(180deg, #06101F 0%, #080F2A 100%); }
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text;
   animation: shimmer 4s linear infinite;
-  font-size: inherit !important;
-  font-weight: inherit !important;
-  line-height: inherit !important;
-  font-family: 'Playfair Display', serif !important;
-  display: inline-block;
 }
 @keyframes shimmer { to { background-position: 200% center; } }
 
@@ -1902,6 +1897,11 @@ footer {
 .cl2 { align-items: flex-start !important; }
 .cl2 > .rc { margin-top: 0 !important; align-self: flex-start; }
 .ctabs { margin-bottom: 28px !important; }
+/* SIP Summary — always flush to top on desktop */
+@media(min-width:769px){
+  .cl2 { align-items: flex-start !important; }
+  .cl2 > .rc { margin-top: 0 !important; align-self: flex-start !important; }
+}
 
 /* ── Footer gradient line spacing ── */
 footer > .w { padding-top: 56px !important; }
@@ -2104,13 +2104,15 @@ footer::before {
   height: 3px;
 }
 
-/* ── LOGO GRADIENT TEXT ON STAT NUMBERS ── */
+/* ── STAT NUMBERS — solid bright white, clearly visible ── */
 .stat-n {
-  background: var(--logo-grd-90);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  -webkit-text-fill-color: unset !important;
+  background-clip: unset !important;
+  color: #ffffff !important;
   font-family: 'Playfair Display', serif !important;
+  text-shadow: 0 0 40px rgba(75,200,200,.5);
 }
 
 /* ── SERVICE CARD HOVER — plain teal border, no gradient ── */
@@ -2151,14 +2153,6 @@ footer::before {
   background: linear-gradient(135deg,
     #06191a 0%, #0a1f06 45%,
     #06101e 100%) !important;
-}
-/* ── GLOBAL: all em/span inside headings must match parent size ── */
-h1 em, h1 span, h2 em, h2 span, h3 em, h3 span,
-.hero-h1 em, .hero-h1 span,
-h2.serif em, h2.serif span {
-  font-size: 107% !important;
-  font-weight: inherit !important;
-  line-height: inherit !important;
 }
 </style>
 </head>
@@ -2444,14 +2438,14 @@ h2.serif em, h2.serif span {
     <h2 class="serif white">Investment <span>Calculators</span></h2>
     <div class="rule"></div>
     <p class="lead white" style="margin-bottom:36px">Accurate calculations using SEBI-standard compound growth formulas.</p>
-    <div class="ctabs">
-      <button class="ctab on" id="tab-sip" onclick="swTab('sip')">SIP Calculator</button>
-      <button class="ctab" id="tab-swp" onclick="swTab('swp')">SWP Calculator</button>
-    </div>
     <!-- SIP -->
     <div class="cpanel on" id="p-sip">
       <div class="cl2">
         <div>
+          <div class="ctabs" style="margin-bottom:28px">
+            <button class="ctab on" id="tab-sip" onclick="swTab('sip')">SIP Calculator</button>
+            <button class="ctab" id="tab-swp" onclick="swTab('swp')">SWP Calculator</button>
+          </div>
           <div class="sg"><div class="sg-row"><span class="sg-lbl">Monthly Investment</span><span class="sg-val" id="sip-al">&#8377;5,000</span></div><input type="range" class="rng" id="sip-a" min="500" max="100000" step="500" value="5000" oninput="cSIP()"/><div class="sg-mm"><span>&#8377;500</span><span>&#8377;1 Lakh</span></div></div>
           <div class="sg"><div class="sg-row"><span class="sg-lbl">Expected Annual Return</span><span class="sg-val" id="sip-rl">12%</span></div><input type="range" class="rng" id="sip-r" min="1" max="30" step="0.5" value="12" oninput="cSIP()"/><div class="sg-mm"><span>1%</span><span>30%</span></div></div>
           <div class="sg"><div class="sg-row"><span class="sg-lbl">Investment Period</span><span class="sg-val" id="sip-yl">10 Years</span></div><input type="range" class="rng" id="sip-y" min="1" max="40" step="1" value="10" oninput="cSIP()"/><div class="sg-mm"><span>1 Year</span><span>40 Years</span></div></div>
@@ -2473,6 +2467,10 @@ h2.serif em, h2.serif span {
     <div class="cpanel" id="p-swp">
       <div class="cl2">
         <div>
+          <div class="ctabs" style="margin-bottom:28px">
+            <button class="ctab" id="tab-sip2" onclick="swTab('sip')">SIP Calculator</button>
+            <button class="ctab on" id="tab-swp2" onclick="swTab('swp')">SWP Calculator</button>
+          </div>
           <div class="sg"><div class="sg-row"><span class="sg-lbl">Total Corpus</span><span class="sg-val" id="swp-cl">&#8377;10,00,000</span></div><input type="range" class="rng" id="swp-c" min="100000" max="10000000" step="50000" value="1000000" oninput="cSWP()"/><div class="sg-mm"><span>&#8377;1 Lakh</span><span>&#8377;1 Crore</span></div></div>
           <div class="sg"><div class="sg-row"><span class="sg-lbl">Monthly Withdrawal</span><span class="sg-val" id="swp-wl">&#8377;8,000</span></div><input type="range" class="rng" id="swp-w" min="1000" max="100000" step="1000" value="8000" oninput="cSWP()"/><div class="sg-mm"><span>&#8377;1,000</span><span>&#8377;1 Lakh</span></div></div>
           <div class="sg"><div class="sg-row"><span class="sg-lbl">Expected Annual Return</span><span class="sg-val" id="swp-rl">8%</span></div><input type="range" class="rng" id="swp-r" min="1" max="20" step="0.5" value="8" oninput="cSWP()"/><div class="sg-mm"><span>1%</span><span>20%</span></div></div>
